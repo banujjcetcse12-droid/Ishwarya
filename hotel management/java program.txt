@@ -1,0 +1,105 @@
+import java.util.Scanner;
+
+class Room {
+    int roomNumber;
+    boolean isOccupied;
+    String customerName;
+
+    Room(int roomNumber) {
+        this.roomNumber = roomNumber;
+        this.isOccupied = false;
+        this.customerName = "";
+    }
+
+    void checkIn(String name) {
+        if (!isOccupied) {
+            isOccupied = true;
+            customerName = name;
+            System.out.println("Check-in successful for Room " + roomNumber);
+        } else {
+            System.out.println("Room already occupied!");
+        }
+    }
+
+    void checkOut() {
+        if (isOccupied) {
+            System.out.println("Customer " + customerName + " checked out from Room " + roomNumber);
+            isOccupied = false;
+            customerName = "";
+        } else {
+            System.out.println("Room already empty!");
+        }
+    }
+
+    void displayStatus() {
+        if (isOccupied) {
+            System.out.println("Room " + roomNumber + " is occupied by " + customerName);
+        } else {
+            System.out.println("Room " + roomNumber + " is available");
+        }
+    }
+}
+
+public class HotelManagement {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        Room[] rooms = new Room[5];
+        for (int i = 0; i < rooms.length; i++) {
+            rooms[i] = new Room(i + 1);
+        }
+
+        int choice;
+
+        do {
+            System.out.println("\n--- Hotel Management System ---");
+            System.out.println("1. View Rooms");
+            System.out.println("2. Check-In");
+            System.out.println("3. Check-Out");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    for (Room r : rooms) {
+                        r.displayStatus();
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter room number: ");
+                    int rNo = sc.nextInt();
+                    sc.nextLine(); // consume newline
+                    System.out.print("Enter customer name: ");
+                    String name = sc.nextLine();
+                    if (rNo > 0 && rNo <= rooms.length) {
+                        rooms[rNo - 1].checkIn(name);
+                    } else {
+                        System.out.println("Invalid room number!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Enter room number: ");
+                    int roomNo = sc.nextInt();
+                    if (roomNo > 0 && roomNo <= rooms.length) {
+                        rooms[roomNo - 1].checkOut();
+                    } else {
+                        System.out.println("Invalid room number!");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Thank you!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 4);
+
+        sc.close();
+    }
+}
